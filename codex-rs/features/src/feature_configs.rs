@@ -257,6 +257,14 @@ where
 #[derive(Serialize, Deserialize, Debug, Clone, Default, PartialEq, Eq, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct MultiAgentV2ConfigToml {
+    /// Discover and message independent local sessions in the same repository or peer group.
+    /// Set false in project configuration to disable both discovery and delivery.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub peer_messaging: Option<bool>,
+    /// Explicitly connect independent sessions across repositories. Case-sensitive.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[schemars(length(min = 1, max = 128))]
+    pub peer_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -2758,6 +2758,16 @@
         "non_code_mode_only": {
           "type": "boolean"
         },
+        "peer_group": {
+          "description": "Explicitly connect independent sessions across repositories. Case-sensitive.",
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "peer_messaging": {
+          "description": "Discover and message independent local sessions in the same repository or peer group. Set false in project configuration to disable both discovery and delivery.",
+          "type": "boolean"
+        },
         "root_agent_usage_hint_text": {
           "type": "string"
         },
