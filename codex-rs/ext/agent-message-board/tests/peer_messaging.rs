@@ -125,3 +125,90 @@ async fn resumed_scope_and_runtime_lease_protect_delivery() {
     assert_eq!(moved.pending().await.unwrap(), None);
     assert_eq!(a.list("").await.unwrap(), Vec::<String>::new());
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn simultaneous_first_connections_register_both_peers() {
+    for _ in 0..10 {
+        let directory = tempfile::tempdir().unwrap();
+        let sqlite =
+            SqliteConfig::new_for_testing(directory.path().to_path_buf().try_into().unwrap());
+        let a_id = ThreadId::new();
+        let b_id = ThreadId::new();
+        let (a, b) = tokio::join!(
+            PeerMailbox::open(
+                &sqlite,
+                a_id,
+                Some("repository".into()),
+                /*group*/ None
+            ),
+            PeerMailbox::open(
+                &sqlite,
+                b_id,
+                Some("repository".into()),
+                /*group*/ None
+            ),
+        );
+        let a = a.unwrap();
+        let b = b.unwrap();
+        assert_eq!(a.list("").await.unwrap(), vec![b_id.to_string()]);
+        assert_eq!(b.list("").await.unwrap(), vec![a_id.to_string()]);
+    }
+}
+
+#[tokio::test]
+async fn peer_registration_does_not_require_the_thread_history_database() {
+    use codex_agent_message_board_extension::PeerOptions;
+    use codex_agent_message_board_extension::install_peers;
+    use codex_agent_message_board_extension::peer_group;
+    use codex_extension_api::ExtensionData;
+    use codex_extension_api::ExtensionRegistryBuilder;
+    use codex_extension_api::ThreadStartInput;
+    use codex_protocol::protocol::SessionSource;
+
+    let directory = tempfile::tempdir().unwrap();
+    let sqlite = SqliteConfig::new_for_testing(directory.path().to_path_buf().try_into().unwrap());
+    let mut builder = ExtensionRegistryBuilder::<SqliteConfig>::new();
+    install_peers(
+        &mut builder,
+        |sqlite, _| {
+            let options = PeerOptions {
+                sqlite: sqlite.clone(),
+                repository: Some("repository".into()),
+                group: None,
+            };
+            Box::pin(async move { Some(options) })
+        },
+        |_, _| Box::pin(async { Ok(false) }),
+    );
+    let registry = builder.build();
+    let session = ExtensionData::new("test-session");
+    let id = ThreadId::new();
+    let thread = ExtensionData::new(id.to_string());
+    for contributor in registry.thread_lifecycle_contributors() {
+        contributor
+            .on_thread_start(ThreadStartInput {
+                config: &sqlite,
+                session_source: &SessionSource::Cli,
+                persistent_thread_state_available: false,
+                environments: &[],
+                mcp_resource_client: None,
+                extension_metrics: None,
+                session_store: &session,
+                thread_store: &thread,
+            })
+            .await;
+    }
+    assert_eq!(
+        peer_group(&thread, /*selection*/ None).await.unwrap(),
+        PeerGroup::Auto
+    );
+    let other = PeerMailbox::open(
+        &sqlite,
+        ThreadId::new(),
+        Some("repository".into()),
+        /*group*/ None,
+    )
+    .await
+    .unwrap();
+    assert_eq!(other.list("").await.unwrap(), vec![id.to_string()]);
+}

@@ -54,8 +54,9 @@ impl<C: Sync> ThreadLifecycleContributor<C> for Peers<C> {
     fn on_thread_start<'a>(&'a self, input: ThreadStartInput<'a, C>) -> ExtensionFuture<'a, ()> {
         Box::pin(async move {
             // Independent roots participate; their children retain existing tree-local messaging.
+            // The mailbox owns its storage; history database availability must not gate peers.
+            // The host options callback excludes ephemeral sessions.
             if input.session_source.parent_thread_id().is_some()
-                || !input.persistent_thread_state_available
                 || input
                     .environments
                     .iter()
