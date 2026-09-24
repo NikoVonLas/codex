@@ -3044,6 +3044,35 @@ class PathUri(RootModel[str]):
     root: str
 
 
+class AutoPeerGroup(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    type: Annotated[Literal["auto"], Field(title="AutoPeerGroupType")]
+
+
+class OffPeerGroup(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    type: Annotated[Literal["off"], Field(title="OffPeerGroupType")]
+
+
+class NamedPeerGroup(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    name: str
+    type: Annotated[Literal["named"], Field(title="NamedPeerGroupType")]
+
+
+class PeerGroup(RootModel[AutoPeerGroup | OffPeerGroup | NamedPeerGroup]):
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+    root: AutoPeerGroup | OffPeerGroup | NamedPeerGroup
+
+
 class PermissionProfileListParams(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,

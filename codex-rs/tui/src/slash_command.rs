@@ -42,6 +42,7 @@ pub enum SlashCommand {
     Voice,
     Goal,
     Agents,
+    Group,
     Side,
     Btw,
     Copy,
@@ -89,6 +90,7 @@ impl SlashCommand {
     /// User-visible description shown in the popup.
     pub fn description(self) -> &'static str {
         match self {
+            SlashCommand::Group => "manage communication with related local sessions",
             SlashCommand::Feedback => "send logs to maintainers",
             SlashCommand::New => "start a new chat during a conversation",
             SlashCommand::Init => "create an AGENTS.md file with instructions for Codex",
@@ -173,6 +175,7 @@ impl SlashCommand {
                 | SlashCommand::Fork
                 | SlashCommand::Plan
                 | SlashCommand::Goal
+                | SlashCommand::Group
                 | SlashCommand::Voice
                 | SlashCommand::Ide
                 | SlashCommand::Keymap
@@ -281,6 +284,7 @@ impl SlashCommand {
             | SlashCommand::Stop
             | SlashCommand::App
             | SlashCommand::Goal
+            | SlashCommand::Group
             | SlashCommand::Voice
             | SlashCommand::Mcp
             | SlashCommand::Apps

@@ -1,0 +1,9 @@
+---
+source: tui/src/chatwidget/tests/peer_group_tests.rs
+expression: "drain_insert_history(&mut\nevents).into_iter().flatten().map(|line|\nline.to_string()).collect::<Vec<_>>().join(\"\\n\")"
+---
+• Group: auto — communicate with sessions in this repository. /group <name> · /group auto · /group off
+
+• Group: website — communicate with this group and sessions in this repository. /group <name> · /group auto · /group off
+
+• Group: off — communication with independent sessions is disabled. /group <name> · /group auto · /group off

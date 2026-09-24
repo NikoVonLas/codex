@@ -673,6 +673,11 @@ pub(crate) enum AppEvent {
         thread_id: ThreadId,
     },
 
+    /// Read or change the current session’s independent-peer group.
+    PeerGroup {
+        thread_id: ThreadId,
+        selection: Option<codex_app_server_protocol::PeerGroup>,
+    },
     /// Open the current thread goal summary/action menu.
     OpenThreadGoalMenu {
         thread_id: ThreadId,

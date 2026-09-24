@@ -1586,6 +1586,9 @@ impl App {
             AppEvent::RefreshStatusLineWorkspaceHeadline { request_id } => {
                 self.refresh_status_line_workspace_headline(app_server, request_id);
             }
+            AppEvent::PeerGroup { thread_id, selection } => {
+                self.update_peer_group(app_server, thread_id, selection).await;
+            }
             AppEvent::OpenThreadGoalMenu { thread_id } => {
                 self.open_thread_goal_menu(app_server, thread_id).await;
             }

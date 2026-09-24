@@ -1,3 +1,4 @@
+mod peer_group;
 use super::thread_input::ensure_direct_input_allowed;
 use super::*;
 use codex_agent_extension::AgentInvocation;

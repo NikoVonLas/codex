@@ -1342,6 +1342,11 @@ impl MessageProcessor {
                     .thread_set_name(request_id.clone(), params)
                     .await
             }
+            ClientRequest::ThreadPeerGroup { params, .. } => {
+                self.turn_processor
+                    .thread_peer_group(&request_id, params)
+                    .await
+            }
             ClientRequest::ThreadGoalSet { params, .. } => {
                 self.thread_goal_processor
                     .thread_goal_set(request_id.clone(), params)

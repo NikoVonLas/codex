@@ -343,6 +343,7 @@ export type { NonSteerableTurnKind } from "./NonSteerableTurnKind";
 export type { OverriddenMetadata } from "./OverriddenMetadata";
 export type { PatchApplyStatus } from "./PatchApplyStatus";
 export type { PatchChangeKind } from "./PatchChangeKind";
+export type { PeerGroup } from "./PeerGroup";
 export type { PermissionGrantScope } from "./PermissionGrantScope";
 export type { PermissionProfileListParams } from "./PermissionProfileListParams";
 export type { PermissionProfileListResponse } from "./PermissionProfileListResponse";

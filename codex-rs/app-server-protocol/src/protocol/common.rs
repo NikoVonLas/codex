@@ -605,6 +605,12 @@ client_request_definitions! {
         serialization: thread_id(params.thread_id),
         response: v2::ThreadSetNameResponse,
     },
+    #[experimental("thread/peerGroup")]
+    ThreadPeerGroup => "thread/peerGroup" {
+        params: v2::ThreadPeerGroupParams,
+        serialization: thread_id(params.thread_id),
+        response: v2::ThreadPeerGroupResponse,
+    },
     ThreadGoalSet => "thread/goal/set" {
         params: v2::ThreadGoalSetParams,
         serialization: thread_id(params.thread_id),

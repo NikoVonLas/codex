@@ -16115,6 +16115,62 @@
       "PathUri": {
         "type": "string"
       },
+      "PeerGroup": {
+        "oneOf": [
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "auto"
+                ],
+                "title": "AutoPeerGroupType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "AutoPeerGroup",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "off"
+                ],
+                "title": "OffPeerGroupType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "title": "OffPeerGroup",
+            "type": "object"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "named"
+                ],
+                "title": "NamedPeerGroupType",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ],
+            "title": "NamedPeerGroup",
+            "type": "object"
+          }
+        ]
+      },
       "PermissionProfileListParams": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "properties": {

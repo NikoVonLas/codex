@@ -321,3 +321,6 @@ mod list_spacing_tests;
 
 #[path = "tests/question_notifications_tests.rs"]
 mod question_notifications_tests;
+
+#[path = "tests/peer_group_tests.rs"]
+mod peer_group_tests;

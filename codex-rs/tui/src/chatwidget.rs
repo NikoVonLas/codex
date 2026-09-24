@@ -308,6 +308,7 @@ mod hook_lifecycle;
 mod hooks;
 mod interaction;
 pub(crate) use interaction::KeyEventAction;
+mod peer_group;
 mod skills;
 mod slash_dispatch;
 mod worktree_picker;

@@ -343,6 +343,7 @@ impl ChatWidget {
             SlashCommand::Plan => {
                 self.apply_plan_slash_command();
             }
+            SlashCommand::Group => self.request_peer_group(""),
             SlashCommand::Goal => {
                 if !self.config.features.enabled(Feature::Goals) {
                     return;
@@ -907,6 +908,7 @@ impl ChatWidget {
                     );
                 }
             }
+            SlashCommand::Group => self.request_peer_group(trimmed),
             SlashCommand::Goal if !trimmed.is_empty() => {
                 if !self.config.features.enabled(Feature::Goals) {
                     if source == SlashCommandDispatchSource::Live {
@@ -1257,6 +1259,7 @@ impl ChatWidget {
             | SlashCommand::Model
             | SlashCommand::Plan
             | SlashCommand::Goal
+            | SlashCommand::Group
             | SlashCommand::Side
             | SlashCommand::Btw
             | SlashCommand::Keymap
